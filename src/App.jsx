@@ -1,12 +1,10 @@
-import logo from "./logo.svg";
+import logo from "./resources/logo.svg";
 
-function App() {
-  return (
-    <div className="example">
-      <img src={logo} alt="logo" />
-      <p>Hello world!</p>
-    </div>
-  );
-}
+const App = () => (
+  <div className="example">
+    <img className="image" src={logo} alt="" />
+    <p>Hello world!</p>
+  </div>
+);
 
 export default App;
