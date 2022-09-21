@@ -1,7 +1,21 @@
 import React from "react";
-import App from "./App";
 import { render } from "./hostConfig";
+import * as PIXI from "pixi.js";
+import sprite from "./resources/logo.svg";
 
-const root = document.getElementById("root");
+const canvas = document.getElementById("canvas");
 
-render(<App />, root);
+const app = new PIXI.Application({
+  width: 800,
+  height: 600,
+  view: canvas,
+  backgroundColor: 0xfdfdfd,
+});
+
+render(<App />, app.stage);
+
+const texture = PIXI.Texture.from(sprite);
+
+function App() {
+  return <sprite texture={texture} width={225} height={165} />;
+}

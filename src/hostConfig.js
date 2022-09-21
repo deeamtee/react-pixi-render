@@ -1,4 +1,5 @@
 import Reconciler from "react-reconciler";
+import * as PIXI from "pixi.js";
 
 const hostConfig = {
   now: Date.now,
@@ -26,14 +27,10 @@ const hostConfig = {
    * Возвращает созданный инстанс.
    * */
   createInstance: (type, props) => {
-    const instance = document.createElement(type);
-    if (props.className) {
-      instance.className = props.className;
-    }
+    const instance = new PIXI.Sprite(props.texture);
 
-    if (instance.tagName === "IMG" && props.src) {
-      instance.src = props.src;
-    }
+    instance.width = props.width;
+    instance.height = props.height;
 
     return instance;
   },
@@ -49,7 +46,7 @@ const hostConfig = {
    * Вызывается на рендер фазе.
    */
   appendInitialChild: (parent, child) => {
-    parent.appendChild(child);
+    parent.addChild(child);
   },
 
   /*
@@ -57,7 +54,7 @@ const hostConfig = {
    * Вызывается для каждого ребенка во время коммит-фазы
    */
   appendChildToContainer: (container, child) => {
-    container.appendChild(child);
+    container.addChild(child);
   },
   removeChild: (parentInstance, child) => { },
   removeChildFromContainer: (container, child) => { },
