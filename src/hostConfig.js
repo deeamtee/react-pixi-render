@@ -27,11 +27,20 @@ const hostConfig = {
    * Возвращает созданный инстанс.
    * */
   createInstance: (type, props) => {
+    const { x = 0, y = 0 } = props;
+
     const instance = new PIXI.Sprite(props.texture);
 
     instance.width = props.width;
     instance.height = props.height;
 
+    instance.x = x;
+    instance.y = y;
+
+    if (props.onClick) {
+      instance.interactive = true;
+      instance.on('click', props.onClick);
+    }
     return instance;
   },
 
@@ -39,7 +48,6 @@ const hostConfig = {
   createTextInstance(text) {
     return document.createTextNode(text);
   },
-  detachDeletedInstance: (instance) => { },
 
   /**
    * Прикрепляет ребёнка к родителю.
@@ -56,8 +64,16 @@ const hostConfig = {
   appendChildToContainer: (container, child) => {
     container.addChild(child);
   },
-  removeChild: (parentInstance, child) => { },
-  removeChildFromContainer: (container, child) => { },
+  /**
+   * Вызывается во время коммит-фазы для родителя,
+   * поддерево которого должно быть удалено
+   */
+  removeChild: (parentInstance, child) => {
+    parentInstance.removeChild(child);
+  },
+  removeChildFromContainer: (container, child) => {
+    container.removeChild(child);
+  },
   clearContainer: (container) => {
     container.innerHTML = "";
   },
@@ -83,6 +99,7 @@ const hostConfig = {
    */
   commitMount: () => { },
   insertInContainerBefore: (container, child, before) => { },
+  detachDeletedInstance: (instance) => { },
   getPublicInstance: (instance) => instance,
   getRootHostContext: (rootContainerInstance) => null, // 1
   getChildHostContext: (parentHostContext, type, rootContainerInstance) => { },

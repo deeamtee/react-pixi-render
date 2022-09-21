@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { render } from "./hostConfig";
 import * as PIXI from "pixi.js";
-import sprite from "./resources/logo.svg";
+import r2d2 from "./resources/r2d2.png";
+import redbutton from "./resources/red-button.png";
 
 const canvas = document.getElementById("canvas");
 
@@ -9,13 +10,32 @@ const app = new PIXI.Application({
   width: 800,
   height: 600,
   view: canvas,
-  backgroundColor: 0xfdfdfd,
+  backgroundColor: 0x292c33,
 });
 
 render(<App />, app.stage);
 
-const texture = PIXI.Texture.from(sprite);
+const texture = PIXI.Texture.from(r2d2);
+const button = PIXI.Texture.from(redbutton);
 
 function App() {
-  return <sprite texture={texture} width={225} height={165} />;
+  const [visible, setVisible] = useState(true);
+
+  const handleClick = () => {
+    setVisible((prev) => !prev);
+  };
+
+  return (
+    <>
+      {visible && <sprite texture={texture} width={75} height={105} />}
+      <sprite
+        texture={button}
+        width={75}
+        height={75}
+        x={725}
+        y={525}
+        onClick={handleClick}
+      />
+    </>
+  );
 }

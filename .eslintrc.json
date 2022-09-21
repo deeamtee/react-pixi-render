@@ -1,8 +1,0 @@
-{
-  "extends": ["prettier"],
-  "rules": {
-    "prefer-const": "error",
-    "indent": ["error", 2],
-    "jsx-a11y/img-has-alt": "off"
-  }
-}
