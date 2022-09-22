@@ -98,7 +98,20 @@ const hostConfig = {
    * как узел был присоеденён к дереву в первый раз.
    */
   commitMount: () => { },
-  insertInContainerBefore: (container, child, before) => { },
+  appendChild: (parent, child) => {
+    parent.addChild(child);
+  },
+  /*
+  * Вставляет ребёнка перед некоторым узлом,
+  * который уже существует на экране. 
+  * Вызывается во время коммит-фазы
+  */
+  insertBefore: (parent, child, before) => {
+    parent.addChild(child);
+  },
+  insertInContainerBefore: (container, child, before) => {
+    container.addChild(child);
+  },
   detachDeletedInstance: (instance) => { },
   getPublicInstance: (instance) => instance,
   getRootHostContext: (rootContainerInstance) => null, // 1

@@ -1,26 +1,26 @@
 import React, { useState } from "react";
-import { render } from "./hostConfig";
+// import { render } from "./hostConfig";
 import * as PIXI from "pixi.js";
 import r2d2 from "./resources/r2d2.png";
 import redbutton from "./resources/red-button.png";
 import boyImg from "./resources/boy.png";
 
-const canvas = document.getElementById("canvas");
+// const canvas = document.getElementById("canvas");
 
-const app = new PIXI.Application({
-  width: 800,
-  height: 600,
-  view: canvas,
-  backgroundColor: 0x292c33,
-});
+// const app = new PIXI.Application({
+//   width: 800,
+//   height: 600,
+//   view: canvas,
+//   backgroundColor: 0x292c33,
+// });
 
-render(<App />, app.stage);
+// render(<App />, app.stage);
 
 const texture = PIXI.Texture.from(r2d2);
 const button = PIXI.Texture.from(redbutton);
 const boy = PIXI.Texture.from(boyImg);
 
-function App() {
+export function AddChildExample() {
   const [characters, setCharacters] = useState([
     {
       char: texture,
