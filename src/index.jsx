@@ -1,70 +1,38 @@
-import React, { useState } from "react";
-import { render } from "./hostConfig";
-import * as PIXI from "pixi.js";
-import r2d2 from "./resources/r2d2.png";
-import redbutton from "./resources/red-button.png";
-import boyImg from "./resources/boy.png";
+import { useState } from "react";
+import ReactDOM from "react-dom/client";
+import img from "./resources/boy.png";
+import Stage from "./components/Stage";
+import Sprite from "./components/Sprite";
+import { useTick } from "./utils/hooks";
 
-const canvas = document.getElementById("canvas");
-
-const app = new PIXI.Application({
-  width: 800,
-  height: 600,
-  view: canvas,
-  backgroundColor: 0x292c33,
-});
-
-render(<App />, app.stage);
-
-const texture = PIXI.Texture.from(r2d2);
-const button = PIXI.Texture.from(redbutton);
-const boy = PIXI.Texture.from(boyImg);
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+root.render(
+  <Stage options={{ backgroundColor: 0x292c33 }}>
+    <App />
+  </Stage>
+);
 
 function App() {
-  const [characters, setCharacters] = useState([
-    {
-      char: texture,
-      width: 75,
-      height: 105,
-    },
-  ]);
-
-  const handleClick = () => {
-    setCharacters((prev) => {
-      const lastItemX = prev[prev.length - 1].x;
-      return [
-        ...prev,
-        {
-          char: boy,
-          width: 120,
-          height: 105,
-          x: lastItemX ? lastItemX + 100 : 100,
-          y: 0,
-        },
-      ];
-    });
+  const [x, setX] = useState(0);
+  const [rotation, setRotation] = useState(0);
+  useTick((delta) => {
+    setRotation((rotation) => rotation - 0.03 * delta);
+  });
+  const handleMouseMove = (event) => {
+    const x = Math.floor(event.data.global.x);
+    setX(x);
   };
 
   return (
-    <>
-      {characters.map(({ char, width, height, x, y }, i) => (
-        <sprite
-          key={i}
-          texture={char}
-          width={width}
-          height={height}
-          x={x}
-          y={y}
-        />
-      ))}
-      <sprite
-        texture={button}
-        width={75}
-        height={75}
-        x={725}
-        y={525}
-        onClick={handleClick}
-      />
-    </>
+    <Sprite
+      img={img}
+      width={180}
+      height={150}
+      x={x}
+      y={250}
+      rotation={rotation}
+      onMouseMove={handleMouseMove}
+    />
   );
 }

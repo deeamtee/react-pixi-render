@@ -1,14 +1,16 @@
 import Reconciler from "react-reconciler";
 import * as PIXI from "pixi.js";
+import { setEventHandlers } from './utils/helpers';
 
 const hostConfig = {
   now: Date.now,
   supportsMutation: true,
+  isPrimaryRenderer: false,
 
   /*
    * Нужно ли обрабатывать вложенное содержимое как текст?
    * Вызывается во время рендер-фазы
-   *
+   * 
    * true: на следующем шаге будет создано представление узла
    * и дальнейший обход вложенного поддерева осуществляться не будет.
    * Текст будет задан на этапе создания createInstance
@@ -16,6 +18,9 @@ const hostConfig = {
    * false: рекурсивная обработка поддерева продолжается
    * */
   shouldSetTextContent: (type, props) => {
+    if (type === 'textarea') {
+      return true;
+    }
     /* Здесь может быть настройка для textarea, dangerouslySetInnerHTML */
     return false;
   },
@@ -27,7 +32,12 @@ const hostConfig = {
    * Возвращает созданный инстанс.
    * */
   createInstance: (type, props) => {
-    const { x = 0, y = 0 } = props;
+    // let instance;
+    // if (type === 'divok') {
+    //   instance = createElement('textarea');
+    //   instance.value = props.value;
+    // }
+    const { x = 0, y = 0, rotation } = props;
 
     const instance = new PIXI.Sprite(props.texture);
 
@@ -37,9 +47,10 @@ const hostConfig = {
     instance.x = x;
     instance.y = y;
 
-    if (props.onClick) {
-      instance.interactive = true;
-      instance.on('click', props.onClick);
+    setEventHandlers(instance, props);
+
+    if (rotation) {
+      instance.rotation = rotation;
     }
     return instance;
   },
@@ -89,7 +100,17 @@ const hostConfig = {
    * Вносит изменения, найденные ранее. Вызывается в фазе коммита
    * на всех элементах, которые имеют updatePayload
    * */
-  commitUpdate: (instance, updatePayload, type, oldProps, newProps) => { },
+  commitUpdate: (instance, updatePayload, type, oldProps, newProps) => {
+
+    if (type === "sprite") {
+      const { x = 0, y = 0, rotation } = updatePayload;
+      instance.x = x;
+      instance.y = y;
+      if (rotation) {
+        instance.rotation = rotation;
+      }
+    }
+  },
 
   /**
    * Вызывается, если на ноде finalizeInitialChildren вернул true.
