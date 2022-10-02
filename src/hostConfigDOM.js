@@ -1,16 +1,13 @@
 import Reconciler from "react-reconciler";
-import * as PIXI from "pixi.js";
-import { setEventHandlers } from './utils/helpers';
 
 const hostConfig = {
   now: Date.now,
   supportsMutation: true,
-  isPrimaryRenderer: false,
 
   /*
    * Нужно ли обрабатывать вложенное содержимое как текст?
    * Вызывается во время рендер-фазы
-   * 
+   *
    * true: на следующем шаге будет создано представление узла
    * и дальнейший обход вложенного поддерева осуществляться не будет.
    * Текст будет задан на этапе создания createInstance
@@ -18,6 +15,7 @@ const hostConfig = {
    * false: рекурсивная обработка поддерева продолжается
    * */
   shouldSetTextContent: (type, props) => {
+    /* Здесь может быть настройка для textarea, dangerouslySetInnerHTML */
     return false;
   },
 
@@ -28,20 +26,13 @@ const hostConfig = {
    * Возвращает созданный инстанс.
    * */
   createInstance: (type, props) => {
-    const { x = 0, y = 0, rotation } = props;
+    const instance = document.createElement(type);
+    if (props.className) {
+      instance.className = props.className;
+    }
 
-    const instance = new PIXI.Sprite(props.texture);
-
-    instance.width = props.width;
-    instance.height = props.height;
-
-    instance.x = x;
-    instance.y = y;
-
-    setEventHandlers(instance, props);
-
-    if (rotation) {
-      instance.rotation = rotation;
+    if (instance.tagName === "IMG" && props.src) {
+      instance.src = props.src;
     }
 
     return instance;
@@ -57,7 +48,7 @@ const hostConfig = {
    * Вызывается на рендер фазе.
    */
   appendInitialChild: (parent, child) => {
-    parent.addChild(child);
+    parent.appendChild(child);
   },
 
   /*
@@ -65,18 +56,10 @@ const hostConfig = {
    * Вызывается для каждого ребенка во время коммит-фазы
    */
   appendChildToContainer: (container, child) => {
-    container.addChild(child);
+    container.appendChild(child);
   },
-  /**
-   * Вызывается во время коммит-фазы для родителя,
-   * поддерево которого должно быть удалено
-   */
-  removeChild: (parentInstance, child) => {
-    parentInstance.removeChild(child);
-  },
-  removeChildFromContainer: (container, child) => {
-    container.removeChild(child);
-  },
+  removeChild: (parentInstance, child) => { },
+  removeChildFromContainer: (container, child) => { },
   clearContainer: (container) => {
     container.innerHTML = "";
   },
@@ -92,17 +75,7 @@ const hostConfig = {
    * Вносит изменения, найденные ранее. Вызывается в фазе коммита
    * на всех элементах, которые имеют updatePayload
    * */
-  commitUpdate: (instance, updatePayload, type, oldProps, newProps) => {
-
-    if (type === "sprite") {
-      const { x = 0, y = 0, rotation } = updatePayload;
-      instance.x = x;
-      instance.y = y;
-      if (rotation) {
-        instance.rotation = rotation;
-      }
-    }
-  },
+  commitUpdate: (instance, updatePayload, type, oldProps, newProps) => { },
 
   /**
    * Вызывается, если на ноде finalizeInitialChildren вернул true.
@@ -113,21 +86,9 @@ const hostConfig = {
   commitMount: () => { },
   finalizeInitialChildren: () => false,
 
-  appendChild: (parent, child) => {
-    parent.addChild(child);
-  },
-  /*
-  * Вставляет ребёнка перед некоторым узлом,
-  * который уже существует на экране. 
-  * Вызывается во время коммит-фазы
-  */
-  insertBefore: (parent, child, before) => {
-    parent.addChild(child);
-  },
-  insertInContainerBefore: (container, child, before) => {
-    container.addChild(child);
-  },
+  insertInContainerBefore: (container, child, before) => { },
   detachDeletedInstance: (instance) => { },
+
   getPublicInstance: (instance) => instance,
   getRootHostContext: (rootContainerInstance) => null,
   getChildHostContext: (parentHostContext, type, rootContainerInstance) => { },
@@ -136,9 +97,9 @@ const hostConfig = {
   resetAfterCommit: (rootContainerInstance) => { },
 };
 
-export const render = (jsx, root) => {
+export const render = (jsx, rootNode) => {
   const reconciler = Reconciler(hostConfig);
-  const container = reconciler.createContainer(root);
+  const container = reconciler.createContainer(rootNode);
 
   reconciler.updateContainer(jsx, container, null, () => { });
 };
