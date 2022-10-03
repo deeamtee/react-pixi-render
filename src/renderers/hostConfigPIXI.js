@@ -1,6 +1,6 @@
 import Reconciler from "react-reconciler";
 import * as PIXI from "pixi.js";
-import { setEventHandlers } from './utils/helpers';
+import { setEventHandlers } from '../utils/utils';
 
 const hostConfig = {
   now: Date.now,
@@ -28,21 +28,80 @@ const hostConfig = {
    * Возвращает созданный инстанс.
    * */
   createInstance: (type, props) => {
-    const { x = 0, y = 0, rotation } = props;
+    let instance;
+    if (type === 'sprite') {
+      const { x = 0, y = 0, rotation, anchor } = props;
 
-    const instance = new PIXI.Sprite(props.texture);
+      instance = new PIXI.Sprite(props.texture);
 
-    instance.width = props.width;
-    instance.height = props.height;
+      instance.width = props.width;
+      instance.height = props.height;
 
-    instance.x = x;
-    instance.y = y;
+      instance.x = x;
+      instance.y = y;
 
-    setEventHandlers(instance, props);
+      setEventHandlers(instance, props);
 
-    if (rotation) {
-      instance.rotation = rotation;
+      if (rotation) {
+        instance.rotation = rotation;
+      }
+      if (anchor) {
+        instance.anchor.set(anchor)
+      }
+    } else if (type === 'text') {
+      const { x = 0, y = 0, text, style, canvas } = props;
+
+      instance = new PIXI.Text(text, style, canvas);
+
+      instance.x = x;
+      instance.y = y;
+    } else if (type === 'graphics') {
+      instance = new PIXI.Graphics();
+      const { fill = 0xffffff, drawRect, drawCircle, drawEllipse, x = 0, y = 0, rotation } = props;
+
+      instance.x = x;
+      instance.y = y;
+
+      if (rotation) {
+        instance.rotation = rotation;
+      }
+
+      instance.beginFill(fill);
+
+      if (drawRect) {
+        if (Array.isArray(drawRect)) {
+          drawRect.forEach((drawRect) => {
+            const { x = 0, y = 0, width, height } = drawRect;
+            instance.drawRect(x, y, width, height)
+          })
+        } else if (typeof drawRect === 'object') {
+          const { x = 0, y = 0, width, height } = drawRect;
+          instance.drawRect(x, y, width, height)
+        }
+      }
+
+      if (drawCircle) {
+        if (Array.isArray(drawCircle)) {
+          drawCircle.forEach((drawCircle) => {
+            const { x = 0, y = 0, radius } = drawCircle;
+            instance.drawCircle(x, y, radius)
+          })
+        } else if (typeof drawCircle === 'object') {
+          const { x = 0, y = 0, radius } = drawCircle;
+          instance.drawCircle(x, y, radius)
+        }
+      }
+
+      if (drawEllipse) {
+        const { x = 0, y = 0, width, height } = drawEllipse;
+        instance.drawEllipse(x, y, width, height)
+      }
+      instance.endFill();
     }
+    else {
+      throw new Error(`Type ${type} is not supported!`)
+    }
+
 
     return instance;
   },
@@ -93,7 +152,6 @@ const hostConfig = {
    * на всех элементах, которые имеют updatePayload
    * */
   commitUpdate: (instance, updatePayload, type, oldProps, newProps) => {
-
     if (type === "sprite") {
       const { x = 0, y = 0, rotation } = updatePayload;
       instance.x = x;
@@ -101,6 +159,53 @@ const hostConfig = {
       if (rotation) {
         instance.rotation = rotation;
       }
+    } else if (type === 'graphics') {
+      const { fill = 0xffffff, drawRect, drawCircle, drawEllipse, x = 0, y = 0, rotation } = updatePayload;
+      instance.x = x;
+      instance.y = y;
+
+      if (rotation) {
+        instance.rotation = rotation;
+      }
+
+      instance.beginFill(fill);
+
+      if (drawRect) {
+        if (Array.isArray(drawRect)) {
+          drawRect.forEach((drawRect) => {
+            const { x = 0, y = 0, width, height } = drawRect;
+            instance.drawRect(x, y, width, height)
+          })
+        } else if (typeof drawRect === 'object') {
+          const { x = 0, y = 0, width, height } = drawRect;
+          instance.drawRect(x, y, width, height)
+        }
+      }
+
+      if (drawCircle) {
+        if (Array.isArray(drawCircle)) {
+          drawCircle.forEach((drawCircle) => {
+            const { x = 0, y = 0, radius } = drawCircle;
+            instance.drawCircle(x, y, radius)
+          })
+        } else if (typeof drawCircle === 'object') {
+          const { x = 0, y = 0, radius } = drawCircle;
+          instance.drawCircle(x, y, radius)
+        }
+      }
+
+      if (drawEllipse) {
+        const { x = 0, y = 0, width, height } = drawEllipse;
+        instance.drawEllipse(x, y, width, height)
+      }
+      instance.endFill();
+    } else if (type === 'text') {
+      const { x = 0, y = 0, text } = updatePayload;
+
+      instance.x = x;
+      instance.y = y;
+
+      instance.text = text;
     }
   },
 

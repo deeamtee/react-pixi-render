@@ -5,7 +5,10 @@
 // import "./examples/add";
 
 /** Пример ренедера в PIXI - удаление */
-import "./examples/delete";
+// import "./examples/delete";
 
 /** Пример ренедера в PIXI - обновление данных */
 // import "./examples/final-pixi";
+
+/** Игра */
+import "./examples/snake";

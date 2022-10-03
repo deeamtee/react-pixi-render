@@ -15,8 +15,8 @@ export const useTick = (fn) => {
     const { ticker } = useApp();
 
     useEffect(() => {
-        ticker.add(fn);
 
+        ticker.add(fn);
         return () => {
             ticker.remove(fn)
         }

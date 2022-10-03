@@ -1,16 +1,13 @@
-export const setEventHandlers = (instance, props) => {
-    if (props.buttonMode) {
-        instance.buttonMode = props.buttonMode;
-    }
-    /** Фильтруем свойства начинающиеся с 'on' и далее заглавной буквой. Например, onClick */
-    const eventHandlers = Object.keys(props).filter((key) => key.startsWith('on'));
-    if (eventHandlers) {
-        eventHandlers.forEach((handler) => {
-            if (/[A-Z]/.test(handler[2])) {
-                instance.interactive = true;
-                const eventName = handler.replace('on', '').toLowerCase();
-                instance.on(eventName, props[handler]);
-            }
-        })
-    }
+export const degreesToRadians = (degrees) => degrees * (Math.PI / 180);
+
+export const directionToDegree = (direction) => {
+    if (direction === 'right') return 180;
+    if (direction === 'down') return 270;
+    if (direction === 'left') return 360;
+    if (direction === 'up') return 90;
+}
+
+export function randomInteger(min, max) {
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
+    return Math.round(rand);
 }

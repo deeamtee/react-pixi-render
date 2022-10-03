@@ -1,6 +1,6 @@
 import Reconciler from "react-reconciler";
 import * as PIXI from "pixi.js";
-import { setEventHandlers } from './utils/helpers';
+import { setEventHandlers } from '../utils/utils';
 
 const hostConfig = {
   now: Date.now,
