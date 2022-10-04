@@ -168,37 +168,37 @@ const hostConfig = {
         instance.rotation = rotation;
       }
 
-      instance.beginFill(fill);
+      // instance.beginFill(fill);
 
-      if (drawRect) {
-        if (Array.isArray(drawRect)) {
-          drawRect.forEach((drawRect) => {
-            const { x = 0, y = 0, width, height } = drawRect;
-            instance.drawRect(x, y, width, height)
-          })
-        } else if (typeof drawRect === 'object') {
-          const { x = 0, y = 0, width, height } = drawRect;
-          instance.drawRect(x, y, width, height)
-        }
-      }
+      // if (drawRect) {
+      //   if (Array.isArray(drawRect)) {
+      //     drawRect.forEach((drawRect) => {
+      //       const { x = 0, y = 0, width, height } = drawRect;
+      //       instance.drawRect(x, y, width, height)
+      //     })
+      //   } else if (typeof drawRect === 'object') {
+      //     const { x = 0, y = 0, width, height } = drawRect;
+      //     instance.drawRect(x, y, width, height)
+      //   }
+      // }
 
-      if (drawCircle) {
-        if (Array.isArray(drawCircle)) {
-          drawCircle.forEach((drawCircle) => {
-            const { x = 0, y = 0, radius } = drawCircle;
-            instance.drawCircle(x, y, radius)
-          })
-        } else if (typeof drawCircle === 'object') {
-          const { x = 0, y = 0, radius } = drawCircle;
-          instance.drawCircle(x, y, radius)
-        }
-      }
+      // if (drawCircle) {
+      //   if (Array.isArray(drawCircle)) {
+      //     drawCircle.forEach((drawCircle) => {
+      //       const { x = 0, y = 0, radius } = drawCircle;
+      //       instance.drawCircle(x, y, radius)
+      //     })
+      //   } else if (typeof drawCircle === 'object') {
+      //     const { x = 0, y = 0, radius } = drawCircle;
+      //     instance.drawCircle(x, y, radius)
+      //   }
+      // }
 
-      if (drawEllipse) {
-        const { x = 0, y = 0, width, height } = drawEllipse;
-        instance.drawEllipse(x, y, width, height)
-      }
-      instance.endFill();
+      // if (drawEllipse) {
+      //   const { x = 0, y = 0, width, height } = drawEllipse;
+      //   instance.drawEllipse(x, y, width, height)
+      // }
+      // instance.endFill();
     } else if (type === 'text') {
       const { x = 0, y = 0, text } = updatePayload;
 

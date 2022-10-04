@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom/client'
 import Stage from '../components/Stage'
 import Sprite from '../components/Sprite'
 import Snake from './components/Snake'
+import Scene from './components/Scene'
 import apple from '../resources/apple.png'
+import wall from '../resources/wall.png'
 import { useApp, useTick } from '../utils/hooks'
 import { useCallback } from 'react'
 import { randomInteger } from '../utils/helpers'
@@ -30,10 +32,10 @@ function PixiApp() {
     const screenWidth = app.screen.width
     const screenHeight = app.screen.height
     const snakeSize = useRef(25)
-    const snakeSpeed = useRef(2)
+    const snakeSpeed = useRef(3)
     const [position, setPosition] = useState({ x: 100, y: 100 })
     const [counter, setCounter] = useState(0)
-    const [snail, setSnail] = useState(0)
+    const [snail, setSnail] = useState([1])
     const [applePosition, setApplePosition] = useState({
         x: randomInteger(0, screenWidth),
         y: randomInteger(0, screenHeight),
@@ -74,7 +76,7 @@ function PixiApp() {
 
             setApplePosition({ x, y })
             setCounter((p) => p + 1)
-            setSnail((p) => p + 10)
+            // setSnail((p) => p + 10)
         }
     }, [position])
 
@@ -88,7 +90,7 @@ function PixiApp() {
 
     return (
         <>
-            <text text={counter} style={{ fontSize: 32, fill: 0xffffff }} x={5} />
+            <text text={counter} style={{ fontSize: 32, fill: 0xffffff }} x={38} />
             <Snake
                 x={position.x}
                 y={position.y}
@@ -104,7 +106,7 @@ function PixiApp() {
                 y={applePosition.y}
                 anchor={0.5}
             />
-            <Sprite img={apple} width={50} height={35} x={45} y={18} anchor={0.5} />
+            <Sprite img={apple} width={50} height={35} x={15} y={18} anchor={0.5} />
         </>
     )
 }
