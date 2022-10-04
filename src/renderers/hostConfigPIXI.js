@@ -30,7 +30,7 @@ const hostConfig = {
   createInstance: (type, props) => {
     let instance;
     if (type === 'sprite') {
-      const { x = 0, y = 0, rotation, anchor } = props;
+      const { x = 0, y = 0, rotation, anchor, zIndex } = props;
 
       instance = new PIXI.Sprite(props.texture);
 
@@ -47,6 +47,9 @@ const hostConfig = {
       }
       if (anchor) {
         instance.anchor.set(anchor)
+      }
+      if (zIndex) {
+        instance.zIndex = zIndex;
       }
     } else if (type === 'text') {
       const { x = 0, y = 0, text, style, canvas } = props;
@@ -153,52 +156,25 @@ const hostConfig = {
    * */
   commitUpdate: (instance, updatePayload, type, oldProps, newProps) => {
     if (type === "sprite") {
+      const { x = 0, y = 0, rotation, zIndex } = updatePayload;
+      instance.x = x;
+      instance.y = y;
+      if (rotation) {
+        instance.rotation = rotation;
+      }
+      if (zIndex) {
+        instance.zIndex = zIndex;
+      }
+    } else if (type === 'graphics') {
       const { x = 0, y = 0, rotation } = updatePayload;
       instance.x = x;
       instance.y = y;
-      if (rotation) {
-        instance.rotation = rotation;
-      }
-    } else if (type === 'graphics') {
-      const { fill = 0xffffff, drawRect, drawCircle, drawEllipse, x = 0, y = 0, rotation } = updatePayload;
-      instance.x = x;
-      instance.y = y;
+
 
       if (rotation) {
         instance.rotation = rotation;
       }
 
-      // instance.beginFill(fill);
-
-      // if (drawRect) {
-      //   if (Array.isArray(drawRect)) {
-      //     drawRect.forEach((drawRect) => {
-      //       const { x = 0, y = 0, width, height } = drawRect;
-      //       instance.drawRect(x, y, width, height)
-      //     })
-      //   } else if (typeof drawRect === 'object') {
-      //     const { x = 0, y = 0, width, height } = drawRect;
-      //     instance.drawRect(x, y, width, height)
-      //   }
-      // }
-
-      // if (drawCircle) {
-      //   if (Array.isArray(drawCircle)) {
-      //     drawCircle.forEach((drawCircle) => {
-      //       const { x = 0, y = 0, radius } = drawCircle;
-      //       instance.drawCircle(x, y, radius)
-      //     })
-      //   } else if (typeof drawCircle === 'object') {
-      //     const { x = 0, y = 0, radius } = drawCircle;
-      //     instance.drawCircle(x, y, radius)
-      //   }
-      // }
-
-      // if (drawEllipse) {
-      //   const { x = 0, y = 0, width, height } = drawEllipse;
-      //   instance.drawEllipse(x, y, width, height)
-      // }
-      // instance.endFill();
     } else if (type === 'text') {
       const { x = 0, y = 0, text } = updatePayload;
 
