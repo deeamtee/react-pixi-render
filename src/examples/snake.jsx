@@ -86,7 +86,7 @@ function PixiApp() {
         if (position.x < 0) setSnail((p) => [...p.slice(1), { x: screenWidth, y: p[p.length - 1].y }]);
         if (position.y < 0) setSnail((p) => [...p.slice(1), { x: p[p.length - 1].x, y: screenHeight }]);
 
-        if (getIntersaction(position, applePosition, 30)) {
+        if (getIntersaction(position, applePosition, 25)) {
             const x = randomInteger(0, screenWidth - 50);
             const y = randomInteger(0, screenHeight - 50);
 
@@ -121,7 +121,7 @@ function PixiApp() {
             {snail.map(({ x, y }, i) => {
                 return <graphics key={i} fill={0x4287f5} drawRect={{ width: size, height: size }} x={x} y={y} />;
             })}
-            <Sprite img={apple} width={50} height={35} x={applePosition.x} y={applePosition.y} anchor={0.5} />
+            <Sprite img={apple} width={50} height={35} x={applePosition.x} y={applePosition.y} anchor={0.1} />
             <Sprite img={apple} width={50} height={35} x={15} y={18} anchor={0.5} />
         </>
     );

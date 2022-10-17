@@ -29,3 +29,7 @@ if (path === '/update') {
 if (path === '/snake') {
     require('./examples/snake');
 }
+
+if (path === '/hunter') {
+    require('./examples/hunter');
+}
