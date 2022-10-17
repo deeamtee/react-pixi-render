@@ -28,21 +28,10 @@ const hostConfig = {
    * Возвращает созданный инстанс.
    * */
   createInstance: (type, props) => {
-    const { x = 0, y = 0, rotation } = props;
-
     const instance = new PIXI.Sprite(props.texture);
 
     instance.width = props.width;
     instance.height = props.height;
-
-    instance.x = x;
-    instance.y = y;
-
-    setEventHandlers(instance, props);
-
-    if (rotation) {
-      instance.rotation = rotation;
-    }
 
     return instance;
   },

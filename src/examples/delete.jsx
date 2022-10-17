@@ -1,34 +1,34 @@
-import React, { useState } from 'react'
-import { render } from '../renderers/hostConfig'
-import * as PIXI from 'pixi.js'
-import r2d2 from '../resources/r2d2.png'
-import redbutton from '../resources/red-button.png'
+import React, { useState } from 'react';
+import { render } from '../renderers/hostConfigDeleteAndRestore';
+import * as PIXI from 'pixi.js';
+import boyImg from '../resources/boy.png';
+import appleImg from '../resources/apple.png';
 
-const canvas = document.getElementById('canvas')
+const canvas = document.getElementById('canvas');
 
 const app = new PIXI.Application({
     width: 800,
     height: 600,
     view: canvas,
     backgroundColor: 0x292c33,
-})
+});
 
-render(<DeleteExample />, app.stage)
+render(<App />, app.stage);
 
-const texture = PIXI.Texture.from(r2d2)
-const button = PIXI.Texture.from(redbutton)
+const boy = PIXI.Texture.from(boyImg);
+const apple = PIXI.Texture.from(appleImg);
 
-export function DeleteExample() {
-    const [visible, setVisible] = useState(true)
+function App() {
+    const [visible, setVisible] = useState(true);
 
     const handleClick = () => {
-        setVisible((prev) => !prev)
-    }
+        setVisible(false);
+    };
 
     return (
         <>
-            {visible && <sprite texture={texture} width={75} height={105} />}
-            <sprite texture={button} width={75} height={75} x={725} y={525} buttonMode onClick={handleClick} />
+            {visible && <sprite texture={apple} width={100} height={75} x={650} y={250} />}
+            <sprite texture={boy} width={200} height={170} x={50} y={200} buttonMode onClick={handleClick} />
         </>
-    )
+    );
 }

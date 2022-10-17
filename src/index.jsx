@@ -1,14 +1,31 @@
-/** Пример рендера аналогичного ReactDOM */
-// import "./examples/dom";
+var path = window.location.pathname;
 
-/** Пример ренедера в PIXI - добавление спрайта */
-// import "./examples/add";
+/** Пример рендера аналогичного ReactDOM */
+if (path === '/dom') {
+    require('./examples/dom/dom');
+}
+
+/** Пример ренедера в PIXI */
+if (path === '/initial') {
+    require('./examples/initial-pixi');
+}
 
 /** Пример ренедера в PIXI - удаление */
-// import "./examples/delete";
+if (path === '/delete') {
+    require('./examples/delete');
+}
+
+/** Пример ренедера в PIXI - добавление спрайта */
+if (path === '/add') {
+    require('./examples/add');
+}
 
 /** Пример ренедера в PIXI - обновление данных */
-// import "./examples/final-pixi";
+if (path === '/update') {
+    require('./examples/final-pixi');
+}
 
 /** Игра */
-import "./examples/snake";
+if (path === '/snake') {
+    require('./examples/snake');
+}

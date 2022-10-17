@@ -77,6 +77,9 @@ const hostConfig = {
   removeChildFromContainer: (container, child) => {
     container.removeChild(child);
   },
+  /**
+   * Этот метод должен мутировать корневой узел и удалить из него всех детей.
+   */
   clearContainer: (container) => {
     container.innerHTML = "";
   },
@@ -93,7 +96,6 @@ const hostConfig = {
    * на всех элементах, которые имеют updatePayload
    * */
   commitUpdate: (instance, updatePayload, type, oldProps, newProps) => {
-
     if (type === "sprite") {
       const { x = 0, y = 0, rotation } = updatePayload;
       instance.x = x;
