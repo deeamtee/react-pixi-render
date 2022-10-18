@@ -92,14 +92,11 @@ function PixiApp() {
         }
     }, []);
 
-    const handleClick = useCallback(
-        (event) => {
-            if (event.target.width === 800) {
-                setArrowPosition({ x: 30, y: event.offsetY - 25 });
-            }
-        },
-        [y]
-    );
+    const handleClick = useCallback((event) => {
+        if (event.target.width === 800) {
+            setArrowPosition({ x: 30, y: event.offsetY - 25 });
+        }
+    }, []);
 
     const arrowTicker = (delta) => {
         setArrowPosition((prev) => ({ x: prev.x + 10 * delta, y: prev.y }));
