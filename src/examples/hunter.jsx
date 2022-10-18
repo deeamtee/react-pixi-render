@@ -106,14 +106,14 @@ function PixiApp() {
 
     return (
         <>
-            {background.map(({ x, y }) => (
-                <Sprite img={trava} width={backgroundSize} height={backgroundSize} x={x} y={y} />
+            {background.map(({ x, y }, i) => (
+                <Sprite key={i} img={trava} width={backgroundSize} height={backgroundSize} x={x} y={y} />
             ))}
-            {randomForest.map((tree) => {
+            {randomForest.map((tree, i) => {
                 if (tree.number === 1) {
-                    return <Sprite img={tree1} width={100} height={100} x={tree.x} y={tree.y} />;
+                    return <Sprite key={i} img={tree1} width={100} height={100} x={tree.x} y={tree.y} />;
                 } else {
-                    return <Sprite img={tree2} width={100} height={100} x={tree.x} y={tree.y} />;
+                    return <Sprite key={i} img={tree2} width={100} height={100} x={tree.x} y={tree.y} />;
                 }
             })}
             <text text={counter} style={{ fontSize: 48, fill: 0xffffff }} x={750} y={0} />
